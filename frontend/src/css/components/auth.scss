@@ -1,0 +1,21 @@
+.auth {
+  padding-left: 4vw;
+  padding-right: 4vw;
+
+  @include md-up {
+    padding-left: 7.15vw;
+    padding-right: 7.15vw;
+  }
+
+  &__content {
+    height: auto;
+    background-color: #f5f5f5;
+    width: 400px;
+    padding: 25px;
+    border-radius: 10px;
+  }
+  &__btn {
+    width: 300px;
+    height: 10px;
+  }
+}
