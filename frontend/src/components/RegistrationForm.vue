@@ -1,5 +1,4 @@
 <template>
-  <div >
     <div class="q-pa-md flex justify-center">
       <p class="text-weight-bold">Создайте свой профиль</p>
       <q-form
@@ -11,7 +10,7 @@
           type="email"
           placeholder="Your email"
           lazy-rules
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
+          :rules="[ val => val && val.length > 0 || 'Поле не должно быть пустым']"
           dense
         />
 
@@ -19,18 +18,31 @@
           v-model="nickname"
           placeholder="Your nickname"
           lazy-rules
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
+          :rules="[ val => val && val.length > 0 || 'Поле не должно быть пустым']"
+          dense
+        />
+
+        <q-input
+          type="password"
+          v-model="password"
+          placeholder="Your password"
+          lazy-rules
+          :rules="[
+          val => val !== null && val !== '' || 'Поле не должно быть пустым',
+          val => val.length > 5 || 'Пароль должен быть длиннее 8 символов',
+        ]"
           dense
         />
 
         <q-input
           :type="isPwd ? 'password' : 'text'"
-          v-model="password"
-          placeholder="Your password"
+          v-model="confirm_password"
+          placeholder="Your confirm password"
           lazy-rules
           :rules="[
-          val => val !== null && val !== '' || 'Please type your password',
-          val => val.length > 5 || 'Хахаха'
+          val => val !== null && val !== '' || 'Поле не должно быть пустым',
+          val => val.length > 5 || 'Пароль должен быть длиннее 8 символов',
+          val => val === this.password || 'Пароль не совпадает',
         ]"
           dense
         >
@@ -43,31 +55,16 @@
           </template>
         </q-input>
 
+        <q-btn label="Зарегистрироваться" type="submit" color="primary" class="auth__btn"/>
 
-        <q-input
-          type="password"
-          v-model="confirm_password"
-          placeholder="Your confirm password"
-          lazy-rules
-          :rules="[
-          val => val !== null && val !== '' || 'Please type your password',
-          val => val.length > 5 || 'Хахаха'
-        ]"
-          dense
-        />
-
-        <div>
-          <q-btn label="Зарегистрироваться" type="submit" color="primary" class="auth__btn"/>
-          <!--          <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm"/>-->
-        </div>
       </q-form>
 
     </div>
-  </div>
 </template>
 
 <script>
 import {defineComponent} from 'vue'
+import {api} from "boot/axios";
 
 export default defineComponent({
   name: "RegistrationForm",
@@ -81,8 +78,20 @@ export default defineComponent({
   }),
 
   methods: {
+
     onSubmit() {
-      console.log(this.nickname);
+      const data = this.createUserData();
+      api.post('register', data)
+        .then(response => console.log(response))
+    },
+
+    createUserData() {
+      return {
+        email: this.email,
+        nickname: this.nickname,
+        password: this.password,
+        confirm_password: this.confirm_password,
+      }
     }
   }
 })

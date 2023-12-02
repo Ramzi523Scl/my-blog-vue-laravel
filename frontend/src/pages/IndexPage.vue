@@ -1,24 +1,17 @@
 <template>
-  <div>
-    hello world
+  <div class="q-pa-lg">
+    <RouterLink to="/login"> Вход</RouterLink>
   </div>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
-import { api } from 'boot/axios'
+import {defineComponent} from 'vue'
+import {api} from 'boot/axios'
 
 export default defineComponent({
   name: 'IndexPage',
 
-  mounted() {
-    this.getData()
-  },
-  methods: {
-    getData() {
-      api.get('/users')
-        .then(response => console.log(response))
-    }
-  }
+  mounted() {},
+  methods: {}
 })
 </script>
